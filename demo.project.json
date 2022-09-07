@@ -1,0 +1,21 @@
+{
+    "name": "Unified-3D-Input",
+    "tree": {
+        "$className": "DataModel",
+        "ReplicatedStorage": {
+            "Unified3DInput": {
+                "$path": "."
+            }
+        },
+        "ServerScriptService": {
+            "$path": "./demo/ServerScriptService/"
+        },
+        "StarterPlayer": {
+            "$className": "StarterPlayer",
+            "StarterPlayerScripts": {
+                "$className": "StarterPlayerScripts",
+                "$path": "./demo/StarterPlayerScripts/"
+            }
+        }
+    }
+}
