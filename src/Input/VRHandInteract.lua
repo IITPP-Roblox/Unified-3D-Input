@@ -70,7 +70,7 @@ end
 --[[
 Destroys the input.
 --]]
-function VRHandInteract:Destroy()
+function VRHandInteract:Destroy(): nil
     self:Disable()
 end
 

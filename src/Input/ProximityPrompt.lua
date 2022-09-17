@@ -104,7 +104,7 @@ end
 --[[
 Destroys the input.
 --]]
-function ProximityPrompt:Destroy()
+function ProximityPrompt:Destroy(): nil
     self:Disable()
 end
 

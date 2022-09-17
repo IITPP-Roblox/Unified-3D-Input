@@ -154,7 +154,7 @@ end
 --[[
 Destroys the input.
 --]]
-function Unified3DInput:Destroy()
+function Unified3DInput:Destroy(): nil
     self.ActivatedEvent:Destroy()
     for _, Input in self.Inputs do
         Input:Destroy()

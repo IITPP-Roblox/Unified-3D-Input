@@ -70,7 +70,7 @@ end
 --[[
 Destroys the input.
 --]]
-function ClickDetector:Destroy()
+function ClickDetector:Destroy(): nil
     self:Disable()
 end
 
