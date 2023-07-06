@@ -36,12 +36,21 @@ end
 Updates the properties of the input to use.
 --]]
 function VRHandInteract:UpdateProperties(Properties: {[string]: any}): ()
-    if Properties["DisableOtherInputs"] ~= nil then
-        if Properties["DisableOtherInputs"] then
-            CollectionService:AddTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
-        else
-            CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
+    local TotalTags = 0
+    for _, Tag in {"DisableClickDetectors", "DisableProximityPrompts"} do
+        if Properties[Tag] ~= nil then
+            if Properties[Tag] then
+                CollectionService:AddTag(self.Input.Part, Tag)
+                TotalTags += 1
+            else
+                CollectionService:RemoveTag(self.Input.Part, Tag)
+            end
         end
+    end
+    if TotalTags > 0 then
+        CollectionService:AddTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
+    else
+        CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
     end
 end
 
@@ -72,6 +81,10 @@ Destroys the input.
 --]]
 function VRHandInteract:Destroy(): ()
     self:Disable()
+    CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
+    for _, Tag in {"DisableClickDetectors", "DisableProximityPrompts"} do
+        CollectionService:RemoveTag(self.Input.Part, Tag)
+    end
 end
 
 

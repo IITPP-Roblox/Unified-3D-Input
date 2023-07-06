@@ -4,9 +4,11 @@ TheNexusAvenger
 Disables non-VR inputs when VR is enabled.
 --]]
 
+local CollectionService = game:GetService("CollectionService")
 local UserInputService = game:GetService("UserInputService")
 
 local VRDisableOtherInputs = {}
+VRDisableOtherInputs.PartsToInputs = {}
 VRDisableOtherInputs.__index = VRDisableOtherInputs
 
 
@@ -21,6 +23,7 @@ function VRDisableOtherInputs.new(Part: BasePart)
         Events = {},
     }
     setmetatable(self, VRDisableOtherInputs)
+    VRDisableOtherInputs.PartsToInputs[Part] = self
 
     if UserInputService.VREnabled then
         --Connect the inputs.
@@ -43,8 +46,12 @@ end
 Updates the children of the part.
 --]]
 function VRDisableOtherInputs:UpdateChildren(): ()
+    local TagsMap = {}
+    for _, Tag in CollectionService:GetTags(self.Part) do
+        TagsMap[Tag] = true
+    end
     for _, Child in self.Part:GetDescendants() do
-        if not Child:IsA("ClickDetector") and not Child:IsA("ProximityPrompt") then continue end
+        if not TagsMap["Disable"..Child.ClassName.."s"] then continue end
         if self.Events[Child] then continue end
 
         Child.MaxActivationDistance = 0
@@ -62,6 +69,21 @@ function VRDisableOtherInputs:Destroy(): ()
         Event:Disconnect()
     end
     self.Events = {}
+    VRDisableOtherInputs.PartsToInputs[self.Part] = nil
+end
+
+
+
+--Connect changing tags.
+for _, Tag in {"DisableClickDetectors", "DisableProximityPrompts"} do
+    CollectionService:GetInstanceAddedSignal(Tag):Connect(function(Part)
+        if not VRDisableOtherInputs.PartsToInputs[Part] then return end
+        VRDisableOtherInputs.PartsToInputs:UpdateChildren()
+    end)
+    CollectionService:GetInstanceRemovedSignal(Tag):Connect(function(Part)
+        if not VRDisableOtherInputs.PartsToInputs[Part] then return end
+        VRDisableOtherInputs.PartsToInputs:UpdateChildren()
+    end)
 end
 
 
