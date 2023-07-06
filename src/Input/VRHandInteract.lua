@@ -4,6 +4,8 @@ TheNexusAvenger
 Input for a VR hand interacting.
 --]]
 
+local INPUT_TAGS = {"DisableClickDetectors", "DisableProximityPrompts"}
+
 local CollectionService = game:GetService("CollectionService")
 
 local Unified3DInputTypes = require(script.Parent.Parent:WaitForChild("Unified3DInputTypes"))
@@ -36,21 +38,14 @@ end
 Updates the properties of the input to use.
 --]]
 function VRHandInteract:UpdateProperties(Properties: {[string]: any}): ()
-    local TotalTags = 0
-    for _, Tag in {"DisableClickDetectors", "DisableProximityPrompts"} do
+    for _, Tag in INPUT_TAGS do
         if Properties[Tag] ~= nil then
             if Properties[Tag] then
-                CollectionService:AddTag(self.Input.Part, Tag)
-                TotalTags += 1
+                CollectionService:AddTag(self.Input.Part, "Unified3DInput_VR"..Tag)
             else
-                CollectionService:RemoveTag(self.Input.Part, Tag)
+                CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VR"..Tag)
             end
         end
-    end
-    if TotalTags > 0 then
-        CollectionService:AddTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
-    else
-        CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
     end
 end
 
@@ -81,9 +76,8 @@ Destroys the input.
 --]]
 function VRHandInteract:Destroy(): ()
     self:Disable()
-    CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
-    for _, Tag in {"DisableClickDetectors", "DisableProximityPrompts"} do
-        CollectionService:RemoveTag(self.Input.Part, Tag)
+    for _, Tag in INPUT_TAGS do
+        CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VR"..Tag)
     end
 end
 

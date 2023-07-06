@@ -8,7 +8,9 @@ local CollectionService = game:GetService("CollectionService")
 
 local Unified3DInputTypes = require(script:WaitForChild("Unified3DInputTypes"))
 
-local Unified3DInput = {}
+local Unified3DInput = {
+    ClientInitialized = false,
+}
 Unified3DInput.__index = Unified3DInput
 
 
@@ -43,6 +45,7 @@ function Unified3DInput.SetUpClient()
     Sets up an input module.
     --]]
     local function SetUpInputModule(InputModule: ModuleScript)
+        if not InputModule:IsA("ModuleScript") then return end
         local InputClass = require(InputModule)
         local InputTag = "Unified3DInput_"..InputModule.Name
         local PartToInput = {}
