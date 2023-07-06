@@ -21,13 +21,13 @@ function ProximityPrompt.new(Input: Unified3DInputTypes.Unified3DInput): Unified
         Input = Input,
         Enabled = false,
         Properties = {},
-    }, ProximityPrompt)
+    }, ProximityPrompt) :: any
 end
 
 --[[
 Updates the properties of the input to use.
 --]]
-function ProximityPrompt:UpdateProperties(Properties: table): nil
+function ProximityPrompt:UpdateProperties(Properties: {[string]: any}): ()
     for Key, Value in Properties do
         self.Properties[Key] = Value
         if self.ProximityPrompt and Key ~= "Offset" then
@@ -42,7 +42,7 @@ end
 --[[
 Updates the offset of the ProximityPrompt.
 --]]
-function ProximityPrompt:UpdateOffset(): nil
+function ProximityPrompt:UpdateOffset(): ()
     if not self.ProximityPrompt then return end
     if not self.Properties["Offset"] then
         self.ProximityPrompt.Parent = self.Input.Part
@@ -66,7 +66,7 @@ end
 --[[
 Enables the input.
 --]]
-function ProximityPrompt:Enable(): nil
+function ProximityPrompt:Enable(): ()
     if self.Enabled then return end
     self.Enabled = true
 
@@ -88,7 +88,7 @@ end
 --[[
 Disables the input.
 --]]
-function ProximityPrompt:Disable(): nil
+function ProximityPrompt:Disable(): ()
     if not self.Enabled then return end
     self.Enabled = false
 
@@ -104,7 +104,7 @@ end
 --[[
 Destroys the input.
 --]]
-function ProximityPrompt:Destroy(): nil
+function ProximityPrompt:Destroy(): ()
     self:Disable()
 end
 

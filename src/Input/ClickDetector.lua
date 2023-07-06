@@ -21,13 +21,13 @@ function ClickDetector.new(Input: Unified3DInputTypes.Unified3DInput): Unified3D
         Input = Input,
         Enabled = false,
         Properties = {},
-    }, ClickDetector)
+    }, ClickDetector) :: any
 end
 
 --[[
 Updates the properties of the input to use.
 --]]
-function ClickDetector:UpdateProperties(Properties: table): nil
+function ClickDetector:UpdateProperties(Properties: {[string]: any}): ()
     for Key, Value in Properties do
         self.Properties[Key] = Value
         if self.ClickDetector then
@@ -39,7 +39,7 @@ end
 --[[
 Enables the input.
 --]]
-function ClickDetector:Enable(): nil
+function ClickDetector:Enable(): ()
     if self.Enabled then return end
     self.Enabled = true
 
@@ -58,7 +58,7 @@ end
 --[[
 Disables the input.
 --]]
-function ClickDetector:Disable(): nil
+function ClickDetector:Disable(): ()
     if not self.Enabled then return end
     self.Enabled = false
 
@@ -70,7 +70,7 @@ end
 --[[
 Destroys the input.
 --]]
-function ClickDetector:Destroy(): nil
+function ClickDetector:Destroy(): ()
     self:Disable()
 end
 

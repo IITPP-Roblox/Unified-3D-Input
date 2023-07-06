@@ -4,6 +4,8 @@ TheNexusAvenger
 Input for a VR hand interacting.
 --]]
 
+local INPUT_TAGS = {"DisableClickDetectors", "DisableProximityPrompts"}
+
 local CollectionService = game:GetService("CollectionService")
 
 local Unified3DInputTypes = require(script.Parent.Parent:WaitForChild("Unified3DInputTypes"))
@@ -29,18 +31,20 @@ function VRHandInteract.new(Input: Unified3DInputTypes.Unified3DInput): Unified3
     return setmetatable({
         Input = Input,
         Enabled = false,
-    }, VRHandInteract)
+    }, VRHandInteract) :: any
 end
 
 --[[
 Updates the properties of the input to use.
 --]]
-function VRHandInteract:UpdateProperties(Properties: table): nil
-    if Properties["DisableOtherInputs"] ~= nil then
-        if Properties["DisableOtherInputs"] then
-            CollectionService:AddTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
-        else
-            CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
+function VRHandInteract:UpdateProperties(Properties: {[string]: any}): ()
+    for _, Tag in INPUT_TAGS do
+        if Properties[Tag] ~= nil then
+            if Properties[Tag] then
+                CollectionService:AddTag(self.Input.Part, "Unified3DInput_VR"..Tag)
+            else
+                CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VR"..Tag)
+            end
         end
     end
 end
@@ -48,7 +52,7 @@ end
 --[[
 Enables the input.
 --]]
-function VRHandInteract:Enable(): nil
+function VRHandInteract:Enable(): ()
     if self.Enabled then return end
     self.Enabled = true
 
@@ -59,7 +63,7 @@ end
 --[[
 Disables the input.
 --]]
-function VRHandInteract:Disable(): nil
+function VRHandInteract:Disable(): ()
     if not self.Enabled then return end
     self.Enabled = false
 
@@ -70,8 +74,11 @@ end
 --[[
 Destroys the input.
 --]]
-function VRHandInteract:Destroy(): nil
+function VRHandInteract:Destroy(): ()
     self:Disable()
+    for _, Tag in INPUT_TAGS do
+        CollectionService:RemoveTag(self.Input.Part, "Unified3DInput_VR"..Tag)
+    end
 end
 
 

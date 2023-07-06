@@ -18,7 +18,7 @@ local Input = Unified3DInput.new(Part)
     :SetMaxActivationDistance(20)
     :AddInput("ClickDetector")
     :AddInput("ProximityPrompt", {ActionText = "Activate", ObjectText = "Test Button", HoldDuration = 0.5, Offset = Vector3.new(0, 0, 0.5)})
-    :AddInput("VRHandInteract", {DisableOtherInputs = true})
+    :AddInput("VRHandInteract", {DisableProximityPrompts = true})
 
 Input.Activated:Connect(function(Player, Distance)
     print(tostring(Player).." activated at a distance of "..tostring(Distance))
