@@ -33,7 +33,7 @@ end
 --[[
 Destroys the input.
 --]]
-function VRHandInteract:Destroy(): nil
+function VRHandInteract:Destroy(): ()
     VRHandInteract.ActiveParts[self.Part] = nil
 end
 

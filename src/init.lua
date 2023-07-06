@@ -29,7 +29,7 @@ function Unified3DInput.new(Part: BasePart): Unified3DInputTypes.Unified3DInput
     self.Activated = self.ActivatedEvent.Event
 
     --Return the object.
-    return self
+    return self :: any
 end
 
 --[[
@@ -82,7 +82,7 @@ end
 Adds an input.
 Returns itself to allow chaining.
 --]]
-function Unified3DInput:AddInput(InputName: string, Properties: table?): Unified3DInputTypes.Unified3DInput
+function Unified3DInput:AddInput(InputName: string, Properties: {[string]: any}?): Unified3DInputTypes.Unified3DInput
     --Raise an error if the input was already created.
     if self.Inputs[InputName] then
         error("Input already createD: "..tostring(InputName))
@@ -116,7 +116,7 @@ end
 --[[
 Enables the input.
 --]]
-function Unified3DInput:Enable(): nil
+function Unified3DInput:Enable(): ()
     if self.Enabled then return end
     self.Enabled = true
     for _, Input in self.Inputs do
@@ -127,7 +127,7 @@ end
 --[[
 Disables the input.
 --]]
-function Unified3DInput:Disable(): nil
+function Unified3DInput:Disable(): ()
     if not self.Enabled then return end
     self.Enabled = false
     for _, Input in self.Inputs do
@@ -138,7 +138,7 @@ end
 --[[
 Activates the input for a player.
 --]]
-function Unified3DInput:Activate(Player: Player): nil
+function Unified3DInput:Activate(Player: Player): ()
     if not self.Enabled then return end
 
     --Return if the player distance can't be calculated.
@@ -154,7 +154,7 @@ end
 --[[
 Destroys the input.
 --]]
-function Unified3DInput:Destroy(): nil
+function Unified3DInput:Destroy(): ()
     self.ActivatedEvent:Destroy()
     for _, Input in self.Inputs do
         Input:Destroy()

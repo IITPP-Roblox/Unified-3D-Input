@@ -42,7 +42,7 @@ end
 --[[
 Updates the children of the part.
 --]]
-function VRDisableOtherInputs:UpdateChildren(): nil
+function VRDisableOtherInputs:UpdateChildren(): ()
     for _, Child in self.Part:GetDescendants() do
         if not Child:IsA("ClickDetector") and not Child:IsA("ProximityPrompt") then continue end
         if self.Events[Child] then continue end
@@ -57,7 +57,7 @@ end
 --[[
 Destroys the input.
 --]]
-function VRDisableOtherInputs:Destroy(): nil
+function VRDisableOtherInputs:Destroy(): ()
     for _, Event in self.Events do
         Event:Disconnect()
     end

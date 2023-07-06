@@ -29,13 +29,13 @@ function VRHandInteract.new(Input: Unified3DInputTypes.Unified3DInput): Unified3
     return setmetatable({
         Input = Input,
         Enabled = false,
-    }, VRHandInteract)
+    }, VRHandInteract) :: any
 end
 
 --[[
 Updates the properties of the input to use.
 --]]
-function VRHandInteract:UpdateProperties(Properties: table): nil
+function VRHandInteract:UpdateProperties(Properties: {[string]: any}): ()
     if Properties["DisableOtherInputs"] ~= nil then
         if Properties["DisableOtherInputs"] then
             CollectionService:AddTag(self.Input.Part, "Unified3DInput_VRDisableOtherInputs")
@@ -48,7 +48,7 @@ end
 --[[
 Enables the input.
 --]]
-function VRHandInteract:Enable(): nil
+function VRHandInteract:Enable(): ()
     if self.Enabled then return end
     self.Enabled = true
 
@@ -59,7 +59,7 @@ end
 --[[
 Disables the input.
 --]]
-function VRHandInteract:Disable(): nil
+function VRHandInteract:Disable(): ()
     if not self.Enabled then return end
     self.Enabled = false
 
@@ -70,7 +70,7 @@ end
 --[[
 Destroys the input.
 --]]
-function VRHandInteract:Destroy(): nil
+function VRHandInteract:Destroy(): ()
     self:Disable()
 end
 
