@@ -28,6 +28,9 @@ end)
 Creates a VR Hand Input.
 --]]
 function VRHandInteract.new(Input: Unified3DInputTypes.Unified3DInput): Unified3DInputTypes.Input
+    if not Input.Part.CanTouch then
+        warn(`{Input.Part:GetFullName()} has VRHandInteract set up but CanTouch is false. VR inputs will not work for this part.`)
+    end
     return setmetatable({
         Input = Input,
         Enabled = false,
