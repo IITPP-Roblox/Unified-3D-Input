@@ -11,6 +11,7 @@ export type Input = {
     Destroy: (Input) -> (),
 }
 export type Unified3DInput = {
+    Part: BasePart,
     SetMaxActivationDistance: (Unified3DInput, number) -> Unified3DInput,
     AddInput: (Unified3DInput, string, {[string]: any}?) -> Unified3DInput,
     Enable: (Unified3DInput) -> (),
