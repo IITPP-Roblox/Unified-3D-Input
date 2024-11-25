@@ -1,8 +1,5 @@
---[[
-TheNexusAvenger
-
-Handles a VR hand interacting on the client.
---]]
+--Handles a VR hand interacting on the client.
+--!strict
 
 local HAND_NAMES = {"LeftHand", "RightHand"}
 
@@ -13,17 +10,20 @@ local VRHandInteract = {}
 VRHandInteract.ActiveParts = {}
 VRHandInteract.__index = VRHandInteract
 
+export type VRHandInteract = {
+    Part: BasePart,
+} & typeof(setmetatable({}, VRHandInteract))
+
 
 
 --[[
 Creates a VR Hand Input.
 --]]
-function VRHandInteract.new(Part: BasePart)
+function VRHandInteract.new(Part: BasePart): VRHandInteract
     --Create the object.
-    local self = {
+    local self = setmetatable({
         Part = Part,
-    }
-    setmetatable(self, VRHandInteract)
+    }, VRHandInteract) :: VRHandInteract
 
     --Store and return the object.
     VRHandInteract.ActiveParts[Part] = self
@@ -33,7 +33,7 @@ end
 --[[
 Destroys the input.
 --]]
-function VRHandInteract:Destroy(): ()
+function VRHandInteract.Destroy(self: VRHandInteract): ()
     VRHandInteract.ActiveParts[self.Part] = nil
 end
 

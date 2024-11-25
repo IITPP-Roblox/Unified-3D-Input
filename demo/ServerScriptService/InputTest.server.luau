@@ -1,8 +1,5 @@
---[[
-TheNexusAvenger
-
-Demo for an input.
---]]
+--Demo for an input.
+--!strict
 
 local Unified3DInput = require(game:GetService("ReplicatedStorage"):WaitForChild("Unified3DInput"))
 
@@ -21,7 +18,7 @@ local Input = Unified3DInput.new(Part)
     :AddInput("VRHandInteract", {DisableProximityPrompts = true})
 
 Input.Activated:Connect(function(Player, Distance)
-    print(tostring(Player).." activated at a distance of "..tostring(Distance))
+    print(`{Player} activated at a distance of {Distance}`)
     Input:Disable()
     Part.BrickColor = BrickColor.new("Bright red")
     task.wait(0.5)
