@@ -1,8 +1,5 @@
---[[
-TheNexusAvenger
-
-Main module for Unified 3D Input.
---]]
+--Main module for Unified 3D Input.
+--!strict
 
 local CollectionService = game:GetService("CollectionService")
 
@@ -13,12 +10,21 @@ local Unified3DInput = {
 }
 Unified3DInput.__index = Unified3DInput
 
+export type Unified3DInput = {
+    Part: BasePart,
+    Enabled: boolean,
+    Inputs: {[string]: Unified3DInputTypes.Input},
+    MaxActivationDistance: number,
+    ActivatedEvent: BindableEvent,
+    Activated: RBXScriptSignal,
+} & typeof(setmetatable({}, Unified3DInput))
+
 
 
 --[[
 Creates a Unified 3D Input.
 --]]
-function Unified3DInput.new(Part: BasePart): Unified3DInputTypes.Unified3DInput
+function Unified3DInput.new(Part: BasePart): Unified3DInput
     --Create the object.
     local self = {
         Part = Part,
@@ -37,7 +43,7 @@ end
 --[[
 Sets up the client.
 --]]
-function Unified3DInput.SetUpClient()
+function Unified3DInput.SetUpClient(): ()
     if Unified3DInput.ClientInitialized then return end
     Unified3DInput.ClientInitialized = true
 
@@ -46,8 +52,8 @@ function Unified3DInput.SetUpClient()
     --]]
     local function SetUpInputModule(InputModule: ModuleScript)
         if not InputModule:IsA("ModuleScript") then return end
-        local InputClass = require(InputModule)
-        local InputTag = "Unified3DInput_"..InputModule.Name
+        local InputClass = require(InputModule) :: any
+        local InputTag = `Unified3DInput_{InputModule.Name}`
         local PartToInput = {}
         CollectionService:GetInstanceAddedSignal(InputTag):Connect(function(Part)
             PartToInput[Part] = InputClass.new(Part)
@@ -73,7 +79,7 @@ end
 Sets the MaxActivationDistance.
 Returns itself to allow chaining.
 --]]
-function Unified3DInput:SetMaxActivationDistance(MaxActivationDistance: number): Unified3DInputTypes.Unified3DInput
+function Unified3DInput.SetMaxActivationDistance(self: Unified3DInput, MaxActivationDistance: number): Unified3DInput
     self.MaxActivationDistance = MaxActivationDistance
     for _, Input in self.Inputs do
         Input:UpdateProperties({MaxActivationDistance = MaxActivationDistance})
@@ -85,20 +91,20 @@ end
 Adds an input.
 Returns itself to allow chaining.
 --]]
-function Unified3DInput:AddInput(InputName: string, Properties: {[string]: any}?): Unified3DInputTypes.Unified3DInput
+function Unified3DInput.AddInput(self: Unified3DInput, InputName: string, Properties: {[string]: any}?): Unified3DInput
     --Raise an error if the input was already created.
     if self.Inputs[InputName] then
-        error("Input already createD: "..tostring(InputName))
+        error(`Input already created: {InputName}`)
     end
 
     --Raise an error if the input does not exist.
     local InputModule = script:WaitForChild("Input"):FindFirstChild(InputName)
     if not InputModule then
-        error("Input type is unknown: "..tostring(InputName))
+        error(`Input type is unknown: {InputName}`)
     end
 
     --Create an add the input.
-    local Input = require(InputModule).new(self)
+    local Input = (require(InputModule) :: any).new(self)
     if Input.UpdateProperties then
         Input:UpdateProperties({MaxActivationDistance = self.MaxActivationDistance})
         if Properties then
@@ -119,7 +125,7 @@ end
 --[[
 Enables the input.
 --]]
-function Unified3DInput:Enable(): ()
+function Unified3DInput.Enable(self: Unified3DInput): ()
     if self.Enabled then return end
     self.Enabled = true
     for _, Input in self.Inputs do
@@ -130,7 +136,7 @@ end
 --[[
 Disables the input.
 --]]
-function Unified3DInput:Disable(): ()
+function Unified3DInput.Disable(self: Unified3DInput): ()
     if not self.Enabled then return end
     self.Enabled = false
     for _, Input in self.Inputs do
@@ -141,13 +147,13 @@ end
 --[[
 Activates the input for a player.
 --]]
-function Unified3DInput:Activate(Player: Player): ()
+function Unified3DInput.Activate(self: Unified3DInput, Player: Player): ()
     if not self.Enabled then return end
 
     --Return if the player distance can't be calculated.
     local Character = Player.Character
     if not Character then return end
-    local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart")
+    local HumanoidRootPart = Character:FindFirstChild("HumanoidRootPart") :: BasePart
     if not HumanoidRootPart then return end
 
     --Fire the event with the distance.
@@ -157,7 +163,7 @@ end
 --[[
 Destroys the input.
 --]]
-function Unified3DInput:Destroy(): ()
+function Unified3DInput.Destroy(self: Unified3DInput): ()
     self.ActivatedEvent:Destroy()
     for _, Input in self.Inputs do
         Input:Destroy()
