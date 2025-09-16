@@ -1,0 +1,15 @@
+[package]
+name = "iitpp-roblox/unified-3d-input"
+repository = "https://github.com/IITPP-Roblox/Unified-3D-Input"
+description = "Combines several different methods of interacting with parts on Roblox with 1 system."
+license = "MIT"
+authors = ["IITPP-Roblox"]
+version = "1.2.0"
+
+registry = "https://github.com/UpliftGames/wally-index"
+realm = "shared"
+
+exclude = ["**"]
+include = ["src", "src/*", "default.project.json", "wally.lock", "wally.toml"]
+
+[dependencies]
