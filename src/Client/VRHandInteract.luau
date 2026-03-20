@@ -41,19 +41,21 @@ end
 
 --Set up the player's hands intersecting with parts.
 if UserInputService.VREnabled then
-    local VRHandInteractEvent = script.Parent.Parent:WaitForChild("VRHandInteracted")
-    local function CharacterAdded(Character)
+    local VRHandInteractEvent = script.Parent.Parent:WaitForChild("VRHandInteracted") :: RemoteEvent
+    local function CharacterAdded(Character: Model?)
         if not Character then return end
         for _, HandName in HAND_NAMES do
-            local Hand = Character:WaitForChild(HandName)
+            local Hand = Character:WaitForChild(HandName) :: BasePart
             Hand.Touched:Connect(function(TouchPart)
                 if not VRHandInteract.ActiveParts[TouchPart] then return end
                 VRHandInteractEvent:FireServer(TouchPart)
             end)
         end
     end
-    Players.LocalPlayer.CharacterAdded:Connect(CharacterAdded)
-    CharacterAdded(Players.LocalPlayer.Character)
+
+    local Player = Players.LocalPlayer :: Player
+    Player.CharacterAdded:Connect(CharacterAdded)
+    CharacterAdded(Player.Character)
 end
 
 

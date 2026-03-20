@@ -50,7 +50,7 @@ function Unified3DInput.SetUpClient(): ()
     --[[
     Sets up an input module.
     --]]
-    local function SetUpInputModule(InputModule: ModuleScript)
+    local function SetUpInputModule(InputModule: Instance)
         if not InputModule:IsA("ModuleScript") then return end
         local InputClass = require(InputModule) :: any
         local InputTag = `Unified3DInput_{InputModule.Name}`
@@ -104,7 +104,7 @@ function Unified3DInput.AddInput(self: Unified3DInput, InputName: string, Proper
     end
 
     --Create an add the input.
-    local Input = (require(InputModule) :: any).new(self)
+    local Input = (require(InputModule) :: any).new(self) :: Unified3DInputTypes.Input
     if Input.UpdateProperties then
         Input:UpdateProperties({MaxActivationDistance = self.MaxActivationDistance})
         if Properties then
