@@ -63,8 +63,8 @@ function ProximityPrompt.UpdateOffset(self: ProximityPromptInput): ()
         local ProximityPromptAttachment = Instance.new("Attachment")
         ProximityPromptAttachment.Name = HttpService:GenerateGUID()
         ProximityPromptAttachment.Parent = self.Input.Part
-        ProximityPrompt.Parent = self.ProximityPromptAttachment
         self.ProximityPromptAttachment = ProximityPromptAttachment
+        self.ProximityPrompt.Parent = self.ProximityPromptAttachment
     end
     (self.ProximityPromptAttachment :: Attachment).Position = self.Properties["Offset"]
 end
