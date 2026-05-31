@@ -68,7 +68,7 @@ function Unified3DInput.SetUpClient(): ()
         end
     end
 
-    --Set up the client input moduules.
+    --Set up the client input modules.
     for _, Module in script:WaitForChild("Client"):GetChildren() do
         SetUpInputModule(Module)
     end
